@@ -1,0 +1,11 @@
+eclipse.preferences.version=1
+environment/project/fr.ac6.managedbuild.toolchain.gnu.cross.base.1171072804/BOARD/delimiter=\:
+environment/project/fr.ac6.managedbuild.toolchain.gnu.cross.base.1171072804/BOARD/operation=replace
+environment/project/fr.ac6.managedbuild.toolchain.gnu.cross.base.1171072804/BOARD/value=STM32F7DISC
+environment/project/fr.ac6.managedbuild.toolchain.gnu.cross.base.1171072804/append=true
+environment/project/fr.ac6.managedbuild.toolchain.gnu.cross.base.1171072804/appendContributed=true
+environment/project/fr.ac6.managedbuild.toolchain.gnu.cross.base.401236165/BOARD/delimiter=\:
+environment/project/fr.ac6.managedbuild.toolchain.gnu.cross.base.401236165/BOARD/operation=append
+environment/project/fr.ac6.managedbuild.toolchain.gnu.cross.base.401236165/BOARD/value=STM32F7DISC
+environment/project/fr.ac6.managedbuild.toolchain.gnu.cross.base.401236165/append=true
+environment/project/fr.ac6.managedbuild.toolchain.gnu.cross.base.401236165/appendContributed=true
