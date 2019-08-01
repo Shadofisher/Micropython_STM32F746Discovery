@@ -21,4 +21,4 @@ Procedure to Debug in STMCubeIDE
 13.Should now be able to perform source level debugging
 
 
-![test](https://github.com/Shadofisher/Micropython_STM32F746Discovery/edit/master/images/test.jpeg)
+![test](https://github.com/Shadofisher/Micropython_STM32F746Discovery/master/images/test.jpeg)
