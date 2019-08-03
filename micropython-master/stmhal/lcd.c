@@ -26,11 +26,11 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include "py/mphal.h"
 #include "py/nlr.h"
 #include "py/runtime.h"
-
 #if MICROPY_HW_HAS_LCD
 
 #include "pin.h"
@@ -229,7 +229,7 @@ STATIC mp_obj_t pyb_lcd_make_new(const mp_obj_type_t *type, size_t n_args, size_
    // const char *lcd_id = mp_obj_str_get_str(args[0]);
 
     // create lcd object
-    pyb_lcd_obj_t *lcd = m_new_obj(pyb_lcd_obj_t);
+	pyb_lcd_obj_t *lcd = m_new_obj(pyb_lcd_obj_t);
     lcd->base.type = &pyb_lcd_type;
     NewSystemClock_Config();
 
@@ -274,6 +274,62 @@ STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(pyb_lcd_putpixelline_obj, 5, 5, pyb_l
 
 
 
+STATIC mp_obj_t pyb_lcd_drawline(mp_uint_t n_args, const mp_obj_t *args) {
+	int n;
+	int x0 = mp_obj_get_int(args[1]);
+	int y0 = mp_obj_get_int(args[2]);
+	int x1 = mp_obj_get_int(args[3]);
+	int y1 = mp_obj_get_int(args[4]);
+	int x_interval,new_x,new_y;
+	int y_interval;
+	int interval;
+	int signx,signy;
+	unsigned int colour = mp_obj_get_int(args[5]);
+    colour |= 0xff000000;
+
+    x_interval = abs(x1-x0);
+    y_interval = abs(y1-y0);
+
+    if (x_interval >= y_interval)
+    {
+        interval = x_interval;
+    }
+    else
+    {
+        interval = y_interval;
+    }
+
+    for (n = 0; n < interval; n++)
+    {
+        signx=1;
+        signy=1;
+        if (x_interval >= y_interval)
+        {
+        	if (x0>x1)
+                signx=-1;
+            if (y0>y1)
+                signy=-1;
+            new_y = y0 + (int)(n*(y1-y0)/(interval));
+            new_x = (x0+n*signx);
+            //lcd.pixels(new_x,new_y,colour);
+            *(uint32_t *)(0xc0000000 + (new_y*1920 + new_x*4)) = colour;
+
+        }else
+        {
+            if (x0>x1)
+                signx=-1;
+            if (y0>y1)
+                signy=-1;
+            new_x = x0 + (int)(n*abs(x1-x0)/(interval));
+            new_y = (y0+n*signy);
+            //lcd.pixels(new_x,new_y,colour);
+            *(uint32_t *)(0xc0000000 + (new_y*1920 + new_x*4)) = colour;
+        }
+    }
+    return mp_const_none;
+
+}
+STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(pyb_lcd_drawline_obj, 6, 6, pyb_lcd_drawline);
 
 
 /// \method show()
@@ -535,10 +591,17 @@ STATIC MP_DEFINE_CONST_FUN_OBJ_1(pyb_lcd_show_obj, pyb_lcd_show);
 /// Show the hidden buffer on the screen.
 STATIC mp_obj_t pyb_lcd_clear(mp_uint_t n_args, const mp_obj_t *args) {
     //pyb_lcd_obj_t *self = self_in;
-#if (1)
+	unsigned int n,m;
     unsigned int colour = mp_obj_get_int(args[1]);
-	memset((uint32_t*)(0xC0000000),colour,518400);
-#endif
+    colour |= 0xff000000;
+    for (n = 0; n < 272; n++)
+    {
+    	for (m = 0; m < 480; m++)
+    	{
+    		*(uint32_t*)(0xC0000000 + (1920*n)+ (m*4)) = colour;
+    	}
+    }
+	//memset((uint32_t*)(0xC0000000),colour,518400);
     return mp_const_none;
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(pyb_lcd_clear_obj,2,2,pyb_lcd_clear);
@@ -664,7 +727,8 @@ STATIC const mp_rom_map_elem_t pyb_lcd_locals_dict_table[] = {
     { MP_ROM_QSTR(MP_QSTR_memmove), MP_ROM_PTR(&pyb_lcd_memmove_obj) },
     { MP_ROM_QSTR(MP_QSTR_pixels), MP_ROM_PTR(&pyb_lcd_pixels_obj) },
     { MP_ROM_QSTR(MP_QSTR_circle), MP_ROM_PTR(&pyb_lcd_circle_obj) },
-    { MP_ROM_QSTR(MP_QSTR_putpixelline), MP_ROM_PTR(&pyb_lcd_putpixelline_obj) },
+    { MP_ROM_QSTR(MP_QSTR_putpixelline), MP_ROM_PTR(&pyb_lcd_putpixelline_obj)},
+	{ MP_ROM_QSTR(MP_QSTR_lcd_drawline), MP_ROM_PTR(&pyb_lcd_drawline_obj)}
 
 };
 STATIC MP_DEFINE_CONST_DICT(pyb_lcd_locals_dict, pyb_lcd_locals_dict_table);

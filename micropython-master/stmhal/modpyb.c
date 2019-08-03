@@ -43,6 +43,7 @@
 #include "irq.h"
 #include "systick.h"
 #include "led.h"
+#include "huff.h"
 #include "pin.h"
 #include "timer.h"
 #include "extint.h"
@@ -151,6 +152,8 @@ STATIC const mp_rom_map_elem_t pyb_module_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR_mount), MP_ROM_PTR(&mp_vfs_mount_obj) },
 
     { MP_ROM_QSTR(MP_QSTR_Timer), MP_ROM_PTR(&pyb_timer_type) },
+    { MP_ROM_QSTR(MP_QSTR_HUFF), MP_ROM_PTR(&pyb_huff_type) },
+
 
 #if MICROPY_HW_ENABLE_RNG
     { MP_ROM_QSTR(MP_QSTR_rng), MP_ROM_PTR(&pyb_rng_get_obj) },

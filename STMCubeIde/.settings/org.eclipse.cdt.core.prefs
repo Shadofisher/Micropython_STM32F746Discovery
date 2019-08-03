@@ -1,0 +1,11 @@
+eclipse.preferences.version=1
+environment/project/com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.debug.1102367476/BOARD/delimiter=\:
+environment/project/com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.debug.1102367476/BOARD/operation=append
+environment/project/com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.debug.1102367476/BOARD/value=STM32F7DISC
+environment/project/com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.debug.1102367476/append=true
+environment/project/com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.debug.1102367476/appendContributed=true
+environment/project/com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.release.1754926074/BOARD/delimiter=\:
+environment/project/com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.release.1754926074/BOARD/operation=append
+environment/project/com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.release.1754926074/BOARD/value=STM32F7DISC
+environment/project/com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.release.1754926074/append=true
+environment/project/com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.release.1754926074/appendContributed=true

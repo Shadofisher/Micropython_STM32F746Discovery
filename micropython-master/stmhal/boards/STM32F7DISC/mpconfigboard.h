@@ -15,6 +15,7 @@
 #define MICROPY_HW_ENABLE_SERVO     (0)
 #define MICROPY_HW_ENABLE_DAC       (0)
 #define MICROPY_HW_ENABLE_CAN       (1)
+#define MICROPY_HW_HAS_HUFF         (1)
 
 #define MICROPY_BOARD_EARLY_INIT    STM32F7DISC_board_early_init
 void STM32F7DISC_board_early_init(void);

@@ -55,7 +55,7 @@ CFLAGS_MCU_f4 = $(CFLAGS_CORTEX_M) -mtune=cortex-m4 -mcpu=cortex-m4 -DMCU_SERIES
 CFLAGS_MCU_f7 = $(CFLAGS_CORTEX_M) -mtune=cortex-m7 -mcpu=cortex-m7 -DMCU_SERIES_F7
 CFLAGS_MCU_l4 = $(CFLAGS_CORTEX_M) -mtune=cortex-m4 -mcpu=cortex-m4 -DMCU_SERIES_L4
 
-CFLAGS = $(INC) -Wall -Wpointer-arith -Werror -std=gnu99 -nostdlib $(CFLAGS_MOD)
+CFLAGS = $(INC) -Wall -Wpointer-arith -std=gnu99 -nostdlib $(CFLAGS_MOD)
 CFLAGS += -D$(CMSIS_MCU)
 CFLAGS += $(CFLAGS_MCU_$(MCU_SERIES))
 CFLAGS += $(COPT)
@@ -63,7 +63,7 @@ CFLAGS += -Iboards/$(BOARD)
 CFLAGS += -DSTM32_HAL_H='<stm32$(MCU_SERIES)xx_hal.h>'
 
 LDFLAGS = -nostdlib -L $(LD_DIR) -T $(LD_FILE) -Map=$(@:.elf=.map) --cref
-LIBS = $(shell $(CC) $(CFLAGS) -print-libgcc-file-name)
+LIBS = $(shell $(CC) $(CFLAGS)  -print-libgcc-file-name)
 
 # Remove uncalled code from the final image.
 CFLAGS += -fdata-sections -ffunction-sections
@@ -175,6 +175,7 @@ SRC_C = \
 	font24.c\
 	ts_init.c\
 	ft5336.c\
+	huff.c\
 	$(wildcard boards/$(BOARD)/*.c)
 
 SRC_O = \
