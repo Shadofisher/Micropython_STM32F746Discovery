@@ -30,6 +30,13 @@
 
 #include "py/mphal.h"
 #include "py/nlr.h"
+
+/*************************************GF Added**********************************/
+#include "py/mpfile.h"
+#include "py/builtin.h"
+#include "py/misc.h"
+/*******************************************************************************/
+
 #include "py/runtime.h"
 #if MICROPY_HW_HAS_LCD
 
@@ -330,6 +337,34 @@ STATIC mp_obj_t pyb_lcd_drawline(mp_uint_t n_args, const mp_obj_t *args) {
 
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(pyb_lcd_drawline_obj, 6, 6, pyb_lcd_drawline);
+
+
+
+STATIC mp_obj_t pyb_lcd_showimage(mp_uint_t n_args, const mp_obj_t *argss)
+{
+	size_t len;
+	const char *filename = mp_obj_str_get_data(argss[1], &len);
+
+	unsigned char * buf = (unsigned char *)0xc0000000;
+	mp_file_t * mp_file;
+	mp_obj_t filename_obj = mp_obj_new_str(filename, strlen(filename), false);
+	mp_obj_t mode_obj = mp_obj_new_str("r", strlen("r"), true);
+	mp_obj_t args[2] = { filename_obj, mode_obj };
+	mp_file = mp_file_from_file_obj(mp_builtin_open(2, args, (mp_map_t *)&mp_const_empty_map));
+
+	mp_file->readinto_fn = mp_load_attr(mp_file->file_obj, MP_QSTR_readinto);
+    mp_obj_t bytearray = mp_obj_new_bytearray_by_ref(/*num_bytes*/522240, buf);
+    mp_obj_t bytes_read = mp_call_function_1(mp_file->readinto_fn, bytearray);
+
+	//mp_file = mp_open("test.txt", "r");
+
+	return bytes_read;
+
+
+
+}
+STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(pyb_lcd_showimage_obj,2,2,pyb_lcd_showimage);
+
 
 
 /// \method show()
@@ -728,7 +763,8 @@ STATIC const mp_rom_map_elem_t pyb_lcd_locals_dict_table[] = {
     { MP_ROM_QSTR(MP_QSTR_pixels), MP_ROM_PTR(&pyb_lcd_pixels_obj) },
     { MP_ROM_QSTR(MP_QSTR_circle), MP_ROM_PTR(&pyb_lcd_circle_obj) },
     { MP_ROM_QSTR(MP_QSTR_putpixelline), MP_ROM_PTR(&pyb_lcd_putpixelline_obj)},
-	{ MP_ROM_QSTR(MP_QSTR_lcd_drawline), MP_ROM_PTR(&pyb_lcd_drawline_obj)}
+	{ MP_ROM_QSTR(MP_QSTR_lcd_drawline), MP_ROM_PTR(&pyb_lcd_drawline_obj)},
+	{ MP_ROM_QSTR(MP_QSTR_showimage), MP_ROM_PTR(&pyb_lcd_showimage_obj)}
 
 };
 STATIC MP_DEFINE_CONST_DICT(pyb_lcd_locals_dict, pyb_lcd_locals_dict_table);
