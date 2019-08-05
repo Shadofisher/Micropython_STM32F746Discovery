@@ -349,10 +349,10 @@ STATIC mp_obj_t pyb_lcd_showpartimage(mp_uint_t n_args, const mp_obj_t *argss)
 	int width  = mp_obj_get_int(argss[4]);
 	int height = mp_obj_get_int(argss[5]);
 	int n;
-	unsigned char * buf = (unsigned char *)0xc0000000;
+	unsigned char buf[1920];
 
 	unsigned int * start;
-    	mp_obj_t bytes_read;
+   // 	mp_obj_t bytes_read;
 
 
 
@@ -366,12 +366,12 @@ STATIC mp_obj_t pyb_lcd_showpartimage(mp_uint_t n_args, const mp_obj_t *argss)
 
 	mp_file->readinto_fn = mp_load_attr(mp_file->file_obj, MP_QSTR_readinto);
     	mp_obj_t bytearray = mp_obj_new_bytearray_by_ref(width, buf);
-    	//mp_obj_t bytes_read = mp_call_function_1(mp_file->readinto_fn, bytearray);
+    	mp_obj_t bytes_read = mp_call_function_1(mp_file->readinto_fn, bytearray);
 
     	for (int n = 0; n < height; n++)
     	{
-        	buf = (unsigned char *)(0xc0000000 + x0 + (y0 +n)*1920);
-		//memcpy(start,buf,width);
+        	start = (unsigned char *)(0xc0000000 + (x0 *4) + (y0 +n)*1920);
+        	memcpy(start,buf,width);
        		bytes_read = mp_call_function_1(mp_file->readinto_fn, bytearray);
     	}
 	//mp_file = mp_open("test.txt", "r");
